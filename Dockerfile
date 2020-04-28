@@ -6,7 +6,7 @@ LABEL \
   maintainer="Logan Marchione <logan@loganmarchione.com>" \
   org.opencontainers.image.authors="Logan Marchione <logan@loganmarchione.com>" \
   org.opencontainers.image.title="docker-iperf3" \
-  org.opencontainers.image.description="Runs an iperf3 server." \
+  org.opencontainers.image.description="Runs an iPerf3 server in Docker" \
   org.opencontainers.image.created=$BUILD_DATE
 
 RUN apk add --no-cache --update \
@@ -16,6 +16,8 @@ RUN apk add --no-cache --update \
 USER iperf3
 
 EXPOSE 5201
+
+COPY ./VERSION /
 
 ENTRYPOINT ["iperf3"]
 
