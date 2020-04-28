@@ -13,7 +13,7 @@ Runs an iPerf3 server in Docker
 
 ### Docker image tags
   - `latest-alpine`: Latest version, based on Alpine
-  - `X.X.X-alpine`: [Sematic version](https://semver.org/), based on Alpine (use if you want to stick on a specific version)
+  - `X.X.X-alpine`: [Semantic version](https://semver.org/), based on Alpine (use if you want to stick on a specific version)
 
 ### Environment variables
 N/A
