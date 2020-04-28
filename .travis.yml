@@ -14,4 +14,4 @@ script:
   # Test if the container runs
   - docker run --name test-container --detach --publish '5201:5201' ${REPO}
   - sleep 10
-  - docker exec --tty test-container "which iperf3"
+  - docker exec --tty test-container /bin/sh -c "which iperf3 && iperf3 --version"
