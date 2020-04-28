@@ -17,7 +17,7 @@ USER iperf3
 
 EXPOSE 5201
 
-COPY ./VERSION /
+COPY ../VERSION /
 
 ENTRYPOINT ["iperf3"]
 
