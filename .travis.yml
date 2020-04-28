@@ -2,16 +2,23 @@
 
 env:
   global:
-    - REPO=loganmarchione/docker-iperf3
+    - USER=loganmarchione
+    - REPO=docker-iperf3
 
 services:
   - docker
 
 script:
   # Build the container
-  - docker build --tag ${REPO} .
+  - docker build --tag ${USER}/${REPO} .
 
-  # Test if the container runs
-  - docker run --name test-container --detach --publish '5201:5201' ${REPO}
+  # Test if the container runs, then if iperf is installed successfully
+  - docker run --name test-container --detach --publish '5201:5201' ${USER}/${REPO}
   - sleep 10
+  - docker ps -a
   - docker exec --tty test-container /bin/sh -c "which iperf3 && iperf3 --version"
+
+after_success:
+  - echo "$DOCKER_HUB_PASS" | docker login -u "$DOCKER_HUB_USER" --password-stdin
+  - docker tag ${USER}/${REPO} ${USER}/${REPO}:${TRAVIS_BUILD_NUMBER}
+  - docker push ${USER}/${REPO}:${TRAVIS_BUILD_NUMBER}
