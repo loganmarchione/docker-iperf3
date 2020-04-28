@@ -17,7 +17,7 @@ jobs:
 
       script:
         # Build the container
-        - docker build --file ${BASE}/Dockerfile --tag ${USER}/${REPO}:${VERSION} . 
+        - docker build --file ${BASE}/Dockerfile --tag ${USER}/${REPO}:${VERSION}-${BASE} . 
       
         # Test if the container runs, then if iperf is installed successfully
         - docker run --name test-container --detach --publish '5201:5201' ${USER}/${REPO}:${VERSION}-${BASE}
