@@ -32,4 +32,7 @@ jobs:
         # Image with numbered tag
         - docker tag ${USER}/${REPO}:${VERSION}-${BASE} ${USER}/${REPO}:${VERSION}-${BASE}
         - docker push ${USER}/${REPO}:${VERSION}-${BASE}
+
+        # Image with latest tag
+        - docker tag ${USER}/${REPO}:${VERSION}-${BASE} ${USER}/${REPO}:latest-${BASE}
         - docker push ${USER}/${REPO}:latest-${BASE}
