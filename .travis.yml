@@ -4,21 +4,29 @@ env:
   global:
     - USER=loganmarchione
     - REPO=docker-iperf3
+    - VERSION=1.0.0
 
 services:
   - docker
 
-script:
-  # Build the container
-  - docker build --tag ${USER}/${REPO} .
+jobs:
+  include:
+    - stage: Build Alpine
+      env:
+        - BASE=alpine
 
-  # Test if the container runs, then if iperf is installed successfully
-  - docker run --name test-container --detach --publish '5201:5201' ${USER}/${REPO}
-  - sleep 10
-  - docker ps -a
-  - docker exec --tty test-container /bin/sh -c "which iperf3 && iperf3 --version"
-
-after_success:
-  - echo "$DOCKER_HUB_PASS" | docker login -u "$DOCKER_HUB_USER" --password-stdin
-  - docker tag ${USER}/${REPO} ${USER}/${REPO}:${TRAVIS_BUILD_NUMBER}
-  - docker push ${USER}/${REPO}:${TRAVIS_BUILD_NUMBER}
+      script:
+        # Build the container
+        - docker build --tag ${USER}/${REPO}:${VERSION} .
+      
+        # Test if the container runs, then if iperf is installed successfully
+        - docker run --name test-container --detach --publish '5201:5201' ${USER}/${REPO}:${VERSION}
+        - sleep 10
+        - docker ps -a
+        - docker exec --tty test-container /bin/sh -c "which iperf3 && iperf3 --version"
+      
+      after_success:
+        - echo "$DOCKER_HUB_PASS" | docker login -u "$DOCKER_HUB_USER" --password-stdin
+        - docker tag ${USER}/${REPO}:${VERSION} ${USER}/${REPO}:${VERSION}
+        - docker push ${USER}/${REPO}:${VERSION}
+        - docker push ${USER}/${REPO}:latest
