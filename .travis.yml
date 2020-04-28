@@ -1,0 +1,12 @@
+---
+
+env:
+  global:
+    - REPO=loganmarchione/docker-iperf3
+
+services:
+  - docker
+
+script:
+  # Build the container
+  - docker build --tag ${REPO} . 
