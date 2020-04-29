@@ -3,8 +3,8 @@
 [![Build Status](https://travis-ci.org/loganmarchione/docker-iperf3.svg?branch=master)](https://travis-ci.org/loganmarchione/docker-iperf3)
 
 Runs an iPerf3 server in Docker
-  - Source code is on [GitHub](https://github.com/loganmarchione/docker-iperf3)
-  - Docker container is on [Docker Hub](https://hub.docker.com/r/loganmarchione/docker-iperf3)
+  - Source code: [GitHub](https://github.com/loganmarchione/docker-iperf3)
+  - Docker container: [Docker Hub](https://hub.docker.com/r/loganmarchione/docker-iperf3)
   - Image base: [Alpine Linux](https://hub.docker.com/_/alpine/)
   - Init system: N/A
   - Application: [iPerf3](https://iperf.fr/)
