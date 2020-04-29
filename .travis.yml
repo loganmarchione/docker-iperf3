@@ -1,5 +1,4 @@
 ---
-
 env:
   global:
     - USER=loganmarchione
@@ -17,14 +16,14 @@ jobs:
 
       script:
         # Build the container
-        - docker build --file ${BASE}/Dockerfile --tag ${USER}/${REPO}:${VERSION}-${BASE} . 
-      
+        - docker build --file ${BASE}/Dockerfile --tag ${USER}/${REPO}:${VERSION}-${BASE} .
+
         # Test if the container runs, then if iperf is installed successfully
         - docker run --name test-container --detach --publish '5201:5201' ${USER}/${REPO}:${VERSION}-${BASE}
         - sleep 10
         - docker ps -a
         - docker exec --tty test-container /bin/sh -c "which iperf3 && iperf3 --version"
-      
+
       after_success:
         # Login to DockerHub
         - echo "$DOCKER_HUB_PASS" | docker login -u "$DOCKER_HUB_USER" --password-stdin
