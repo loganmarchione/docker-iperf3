@@ -1,6 +1,7 @@
 # docker-iperf3
 
 [![Build Status](https://travis-ci.org/loganmarchione/docker-iperf3.svg?branch=master)](https://travis-ci.org/loganmarchione/docker-iperf3)
+[![](https://images.microbadger.com/badges/image/loganmarchione/docker-iperf3:latest-alpine.svg)](https://microbadger.com/images/loganmarchione/docker-iperf3:latest-alpine "Get your own image badge on microbadger.com")
 
 Runs an iPerf3 server in Docker
   - Source code: [GitHub](https://github.com/loganmarchione/docker-iperf3)
