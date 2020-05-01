@@ -49,4 +49,4 @@ networks:
 ```
 
 ## TODO
-- [ ] Add image based on Ubuntu or Debian
+- [x] Add image based on Ubuntu or Debian
