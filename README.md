@@ -14,6 +14,8 @@ Runs an iPerf3 server in Docker
 ## Docker image information
 
 ### Docker image tags
+  - `latest`: Latest version, based on Ubuntu
+  - `X.X.X`: [Semantic version](https://semver.org/), based on Ubuntu (use if you want to stick on a specific version)
   - `latest-alpine`: Latest version, based on Alpine
   - `X.X.X-alpine`: [Semantic version](https://semver.org/), based on Alpine (use if you want to stick on a specific version)
 

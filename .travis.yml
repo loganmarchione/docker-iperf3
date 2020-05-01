@@ -10,6 +10,29 @@ services:
 
 jobs:
   include:
+    - stage: Build Ubuntu
+      env:
+        - BASE=ubuntu
+
+      script:
+        # Build the container
+        - docker build --file ${BASE}/Dockerfile --tag ${USER}/${REPO}:${VERSION} .
+
+        # Test if the container runs, then if iperf is installed successfully
+        - docker run --name test-container --detach --publish '5201:5201' ${USER}/${REPO}:${VERSION}
+        - sleep 10
+        - docker ps -a
+        - docker exec --tty test-container /bin/sh -c "which iperf3 && iperf3 --version"
+
+      after_success:
+        # Login to DockerHub
+        - echo "$DOCKER_HUB_PASS" | docker login -u "$DOCKER_HUB_USER" --password-stdin
+
+        # Image with numbered tag
+        - docker tag ${USER}/${REPO}:${VERSION} ${USER}/${REPO}:${VERSION}
+        - docker push ${USER}/${REPO}:latest
+        - docker push ${USER}/${REPO}:${VERSION}
+
     - stage: Build Alpine
       env:
         - BASE=alpine
