@@ -30,8 +30,11 @@ jobs:
 
         # Image with numbered tag
         - docker tag ${USER}/${REPO}:${VERSION} ${USER}/${REPO}:${VERSION}
-        - docker push ${USER}/${REPO}:latest
         - docker push ${USER}/${REPO}:${VERSION}
+
+        # Image with latest tag
+        - docker tag ${USER}/${REPO}:${VERSION} ${USER}/${REPO}:latest
+        - docker push ${USER}/${REPO}:latest
 
     - stage: Build Alpine
       env:
