@@ -7,7 +7,7 @@
 Runs an iPerf3 server in Docker
   - Source code: [GitHub](https://github.com/loganmarchione/docker-iperf3)
   - Docker container: [Docker Hub](https://hub.docker.com/r/loganmarchione/docker-iperf3)
-  - Image base: [Alpine Linux](https://hub.docker.com/_/alpine/)
+  - Image base: [Ubuntu](https://hub.docker.com/_/ubuntu) or [Alpine Linux](https://hub.docker.com/_/alpine/)
   - Init system: N/A
   - Application: [iPerf3](https://iperf.fr/)
 
@@ -42,7 +42,7 @@ services:
       - iperf3
     ports:
       - '5201:5201'
-    image: loganmarchione/docker-iperf3:latest-alpine
+    image: loganmarchione/docker-iperf3:latest
 
 networks:
   iperf3:
