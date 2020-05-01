@@ -12,7 +12,7 @@ LABEL \
 RUN apt-get update && apt-get install -y --no-install-recommends \
     iperf3 && \
     rm -rf /var/lib/apt/lists/* && \
-    adduser -S iperf3
+    adduser --system iperf3
 
 USER iperf3
 

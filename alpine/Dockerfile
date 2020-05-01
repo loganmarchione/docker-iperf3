@@ -11,7 +11,7 @@ LABEL \
 
 RUN apk add --no-cache --update \
     iperf3 && \
-    adduser -S iperf3
+    adduser --system iperf3
 
 USER iperf3
 
