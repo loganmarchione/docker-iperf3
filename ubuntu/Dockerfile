@@ -1,4 +1,4 @@
-FROM alpine:3.11
+FROM ubuntu:bionic
 
 ARG BUILD_DATE
 
@@ -9,8 +9,9 @@ LABEL \
   org.opencontainers.image.description="Runs an iPerf3 server in Docker" \
   org.opencontainers.image.created=$BUILD_DATE
 
-RUN apk add --no-cache --update \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     iperf3 && \
+    rm -rf /var/lib/apt/lists/* && \
     adduser -S iperf3
 
 USER iperf3
