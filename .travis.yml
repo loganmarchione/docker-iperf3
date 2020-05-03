@@ -36,6 +36,9 @@ jobs:
         - docker tag ${USER}/${REPO}:${VERSION} ${USER}/${REPO}:latest
         - docker push ${USER}/${REPO}:latest
 
+        # Logout
+        - docker logout
+
     - stage: Build Alpine
       env:
         - BASE=alpine
@@ -61,3 +64,6 @@ jobs:
         # Image with latest tag
         - docker tag ${USER}/${REPO}:${VERSION}-${BASE} ${USER}/${REPO}:latest-${BASE}
         - docker push ${USER}/${REPO}:latest-${BASE}
+
+        # Logout
+        - docker logout
