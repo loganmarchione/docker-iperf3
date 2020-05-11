@@ -11,6 +11,13 @@ Runs an iPerf3 server in Docker
   - Init system: N/A
   - Application: [iPerf3](https://iperf.fr/)
 
+## Explanation
+
+  - This runs an iPerf3 server in Docker.
+
+## Requirements
+N/A
+
 ## Docker image information
 
 ### Docker image tags
