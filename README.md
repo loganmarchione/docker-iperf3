@@ -57,3 +57,4 @@ networks:
 
 ## TODO
 - [x] Add image based on Ubuntu or Debian
+- [x] Run the processes inside the container as a non-root user
