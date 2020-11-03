@@ -41,3 +41,35 @@ jobs:
       after_deploy:
         # Logout
         - docker logout
+
+    - stage: Build Alpine
+      env:
+        - BASE=alpine
+
+      script:
+        # Build the container
+        - docker build --file ${BASE}/Dockerfile --tag ${USER}/${REPO}:${VERSION}-${BASE} .
+
+        # Test if the container runs, then if iperf is installed successfully
+        - docker run --name test-container --detach --publish '5201:5201' ${USER}/${REPO}:${VERSION}-${BASE}
+        - sleep 10
+        - docker ps -a
+        - docker exec --tty test-container /bin/sh -c "which iperf3 && iperf3 --version"
+
+      before_deploy:
+        # Login to DockerHub
+        - echo "$DOCKER_HUB_PASS" | docker login -u "$DOCKER_HUB_USER" --password-stdin
+        # Image with numbered tag
+        - docker tag ${USER}/${REPO}:${VERSION}-${BASE} ${USER}/${REPO}:${VERSION}-${BASE}
+        # Image with latest tag
+        - docker tag ${USER}/${REPO}:${VERSION}-${BASE} ${USER}/${REPO}:latest-${BASE}
+
+      deploy:
+        provider: script
+        script: docker push ${USER}/${REPO}:${VERSION}-${BASE} && docker push ${USER}/${REPO}:latest-${BASE}
+        on:
+          tags: true
+
+      after_deploy:
+        # Logout
+        - docker logout
