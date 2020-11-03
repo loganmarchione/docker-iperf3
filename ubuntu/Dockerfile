@@ -10,7 +10,8 @@ LABEL \
   org.opencontainers.image.created=$BUILD_DATE
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    iperf3 && \
+    iperf3 \
+    netcat && \
     rm -rf /var/lib/apt/lists/* && \
     adduser --system iperf3
 
