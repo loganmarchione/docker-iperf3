@@ -27,7 +27,9 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Build the image
-      run: docker build --file ${BASE}/Dockerfile --tag ${USER}/${REPO}:${VERSION} .
+      run: |
+        VERSION=$(cat VERSION)
+        docker build --file ${BASE}/Dockerfile --tag ${USER}/${REPO}:${VERSION} .
 
     - name: Test container
       run: |
