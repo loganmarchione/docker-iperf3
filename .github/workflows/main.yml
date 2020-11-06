@@ -27,7 +27,7 @@ jobs:
 
     - name: Build the image
       run: |
-        echo "$(cat VERSION)" >> $VERSION
+        "$(cat VERSION)" >> $VERSION
         docker build --file ${BASE}/Dockerfile --tag ${USER}/${REPO}:${VERSION} .
 
     - name: Test container
