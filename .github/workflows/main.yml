@@ -20,7 +20,7 @@ jobs:
 
     runs-on: ubuntu-latest
     env:
-      - BASE=ubuntu
+      BASE: ubuntu
 
     steps:
     - name: Check out the codebase
@@ -41,7 +41,7 @@ build:
 
     runs-on: ubuntu-latest
     env:
-      - BASE=alpine
+      BASE: alpine
 
     steps:
     - name: Check out the codebase
