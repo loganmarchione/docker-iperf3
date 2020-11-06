@@ -12,7 +12,6 @@ on:
 env:
   USER: loganmarchione
   REPO: docker-iperf3
-  VERSION: $(cat VERSION)
 
 jobs:
   build_ubuntu:
