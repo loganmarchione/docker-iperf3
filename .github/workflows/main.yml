@@ -27,8 +27,8 @@ jobs:
 
     - name: Build the image
       run: |
-        echo "VERSION=$(cat ./VERSION)" >> $GITHUB_ENV
-        docker build --file ${BASE}/Dockerfile --tag ${USER}/${REPO}:${VERSION} .
+        echo "version=$(cat VERSION)" >> $GITHUB_ENV
+        docker build --file ${BASE}/Dockerfile --tag ${USER}/${REPO}:${version} .
 
     - name: Test container
       run: |
