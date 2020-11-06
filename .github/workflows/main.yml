@@ -10,9 +10,9 @@ on:
     - cron: "0 5 * * 0"
 
 env:
-  USER=loganmarchione
-  REPO=docker-iperf3
-  VERSION=$(cat VERSION)
+  USER: loganmarchione
+  REPO: docker-iperf3
+  VERSION: $(cat VERSION)
 
 jobs:
   build:
