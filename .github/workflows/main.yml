@@ -19,7 +19,7 @@ jobs:
 
     runs-on: ubuntu-latest
     env:
-      BASE: ubuntu
+      BASE_DIR: ubuntu
 
     steps:
     - name: Check out the codebase
@@ -35,13 +35,49 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         context: .
-        file: ${{ env.BASE }}/Dockerfile
+        file: ${{ env.BASE_DIR }}/Dockerfile
         load: true
         tags: |
-          ${{ env.USER }}/${{ env.REPO}}:${{ env.VERSION}}
+          ${{ env.USER }}/${{ env.REPO}}:${{ env.VERSION }}
+          ${{ env.USER }}/${{ env.REPO}}:latest
 
     - name: Test image
       run: |
+        docker images
         docker run --name test-container --detach --publish '5201:5201' ${USER}/${REPO}:${VERSION}
+        docker ps -a
+        docker exec --tty test-container /bin/sh -c "which iperf3 && iperf3 --version"
+
+  alpine:
+    name: Build and test (alpine base)
+
+    runs-on: ubuntu-latest
+    env:
+      BASE_DIR: alpine
+
+    steps:
+    - name: Check out the codebase
+      uses: actions/checkout@v2
+
+    - name: Set variables
+      run: |
+        VER=$(cat VERSION)
+        echo "VERSION=$VER" >> $GITHUB_ENV
+        echo $VERSION
+
+    - name: Build Docker Image
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        file: ${{ env.BASE_DIR }}/Dockerfile
+        load: true
+        tags: |
+          ${{ env.USER }}/${{ env.REPO}}:${{ env.VERSION }}-${{ env.BASE_DIR }}
+          ${{ env.USER }}/${{ env.REPO}}:latest-${{ env.BASE_DIR }}
+
+    - name: Test image
+      run: |
+        docker images
+        docker run --name test-container --detach --publish '5201:5201' ${USER}/${REPO}:${VERSION}-${{ env.BASE_DIR }}
         docker ps -a
         docker exec --tty test-container /bin/sh -c "which iperf3 && iperf3 --version"
