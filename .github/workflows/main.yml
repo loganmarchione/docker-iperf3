@@ -35,7 +35,7 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         context: .
-        file: ${BASE}/Dockerfile
+        file: ${{ env.BASE }}/Dockerfile
         load: true
         tags: |
           ${{ env.USER }}/${{ env.REPO}}:${{ env.VERSION}}
