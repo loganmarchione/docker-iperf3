@@ -29,10 +29,6 @@ jobs:
       run: |
         VERSION=$(cat VERSION)
         docker build --file ${BASE}/Dockerfile --tag ${USER}/${REPO}:${VERSION} .
-
-    - name: Test container
-      run: |
-        echo VERSION=$VERSION
         docker run --name test-container --detach --publish '5201:5201' ${USER}/${REPO}:${VERSION}
         sleep 10
         docker ps -a
