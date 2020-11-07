@@ -27,12 +27,10 @@ jobs:
 
     - name: Set variables
       run: |
-        VERSION=$(cat VERSION)
-        echo "VERSION=VERSION" >> $GITHUB_ENV
+        VER=$(cat VERSION)
+        echo "VERSION=$VER" >> $GITHUB_ENV
+        echo $VERSION
 
-    - name: Build and test
+    - name: Get variables
       run: |
-        docker build --file ${BASE}/Dockerfile --tag ${USER}/${REPO}:${VERSION} .
-        docker run --name test-container --detach --publish '5201:5201' ${USER}/${REPO}:${VERSION}
-        docker ps -a
-        docker exec --tty test-container /bin/sh -c "which iperf3 && iperf3 --version"
+        echo $VERSION
