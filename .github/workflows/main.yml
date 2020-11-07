@@ -29,7 +29,6 @@ jobs:
       run: |
         VER=$(cat VERSION)
         echo "VERSION=$VER" >> $GITHUB_ENV
-        echo $VERSION
 
     - name: Build Docker Image
       uses: docker/build-push-action@v2
@@ -38,8 +37,8 @@ jobs:
         file: ${{ env.BASE_DIR }}/Dockerfile
         load: true
         tags: |
-          ${{ env.USER }}/${{ env.REPO}}:${{ env.VERSION }}
-          ${{ env.USER }}/${{ env.REPO}}:latest
+          ${{ env.USER }}/${{ env.REPO }}:${{ env.VERSION }}
+          ${{ env.USER }}/${{ env.REPO }}:latest
 
     - name: Test image
       run: |
@@ -48,8 +47,15 @@ jobs:
         docker ps -a
         docker exec --tty test-container /bin/sh -c "which iperf3 && iperf3 --version"
 
+    - name: Login to DockerHub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKER_HUB_USER }}
+        password: ${{ secrets.DOCKER_HUB_PASS }}
+        logout: true
+
   alpine:
-    name: Build and test (alpine base)
+    name: Build and test (Alpine base)
 
     runs-on: ubuntu-latest
     env:
@@ -63,7 +69,6 @@ jobs:
       run: |
         VER=$(cat VERSION)
         echo "VERSION=$VER" >> $GITHUB_ENV
-        echo $VERSION
 
     - name: Build Docker Image
       uses: docker/build-push-action@v2
@@ -72,8 +77,8 @@ jobs:
         file: ${{ env.BASE_DIR }}/Dockerfile
         load: true
         tags: |
-          ${{ env.USER }}/${{ env.REPO}}:${{ env.VERSION }}-${{ env.BASE_DIR }}
-          ${{ env.USER }}/${{ env.REPO}}:latest-${{ env.BASE_DIR }}
+          ${{ env.USER }}/${{ env.REPO }}:${{ env.VERSION }}-${{ env.BASE_DIR }}
+          ${{ env.USER }}/${{ env.REPO }}:latest-${{ env.BASE_DIR }}
 
     - name: Test image
       run: |
@@ -81,3 +86,10 @@ jobs:
         docker run --name test-container --detach --publish '5201:5201' ${USER}/${REPO}:${VERSION}-${{ env.BASE_DIR }}
         docker ps -a
         docker exec --tty test-container /bin/sh -c "which iperf3 && iperf3 --version"
+
+    - name: Login to DockerHub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKER_HUB_USER }}
+        password: ${{ secrets.DOCKER_HUB_PASS }}
+        logout: true
