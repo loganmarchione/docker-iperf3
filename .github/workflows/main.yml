@@ -38,8 +38,7 @@ jobs:
         file: ${BASE}/Dockerfile
         load: true
         tags: |
-          ${USER}/${REPO}:${VERSION}
-          ${USER}/${REPO}:latest
+          ${{ env.USER }}/${{ env.REPO}}:${{ env.VERSION}}
 
     - name: Test image
       run: |
