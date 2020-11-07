@@ -31,6 +31,18 @@ jobs:
         echo "VERSION=$VER" >> $GITHUB_ENV
         echo $VERSION
 
-    - name: Get variables
+    - name: Build Docker Image
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        file: ${BASE}/Dockerfile
+        load: true
+        tags: |
+          ${USER}/${REPO}:${VERSION}
+          ${USER}/${REPO}:latest
+
+    - name: Test image
       run: |
-        echo $VERSION
+        docker run --name test-container --detach --publish '5201:5201' ${USER}/${REPO}:${VERSION}
+        docker ps -a
+        docker exec --tty test-container /bin/sh -c "which iperf3 && iperf3 --version"
