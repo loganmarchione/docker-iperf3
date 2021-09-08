@@ -2,7 +2,6 @@
 
 ![CI/CD](https://github.com/loganmarchione/docker-iperf3/workflows/CI/CD/badge.svg)
 [![Docker Image Size (latest semver)](https://img.shields.io/docker/image-size/loganmarchione/docker-iperf3)](https://hub.docker.com/r/loganmarchione/docker-iperf3)
-[![MicroBadger Layers](https://img.shields.io/microbadger/layers/loganmarchione/docker-iperf3)](https://microbadger.com/images/loganmarchione/docker-iperf3)
 
 Runs an iPerf3 server in Docker
   - Source code: [GitHub](https://github.com/loganmarchione/docker-iperf3)
