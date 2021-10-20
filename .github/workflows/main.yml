@@ -46,6 +46,13 @@ jobs:
         docker ps -a
         docker exec --tty test-container /bin/sh -c "which iperf3 && iperf3 --version"
 
+    - name: Container scan
+      uses: azure/container-scan@v0
+      with:
+        image-name: ${{ env.USER }}/${{ env.REPO }}:${{ env.VERSION }}
+        severity-threshold: HIGH
+        run-quality-checks: true
+
   ubuntu_cd:
     name: Deploy (Ubuntu base)
 
@@ -116,6 +123,13 @@ jobs:
         docker run --name test-container --detach --publish '5201:5201' ${USER}/${REPO}:${VERSION}-${{ env.BASE_DIR }}
         docker ps -a
         docker exec --tty test-container /bin/sh -c "which iperf3 && iperf3 --version"
+
+    - name: Container scan
+      uses: azure/container-scan@v0
+      with:
+        image-name: ${{ env.USER }}/${{ env.REPO }}:${{ env.VERSION }}
+        severity-threshold: HIGH
+        run-quality-checks: true
 
   alpine_cd:
     name: Deploy (Alpine base)
