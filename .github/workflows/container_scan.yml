@@ -1,0 +1,81 @@
+name: Container scan on commit to master
+
+on:
+  push:
+    branches:
+      - master
+  schedule:
+    - cron: "0 5 * * 0"
+
+env:
+  USER: loganmarchione
+  REPO: docker-iperf3
+
+jobs:
+  ubuntu_ci:
+    name: Build and scan (Ubuntu base)
+
+    runs-on: ubuntu-latest
+    env:
+      BASE_DIR: ubuntu
+
+    steps:
+    - name: Check out the codebase
+      uses: actions/checkout@v2
+
+    - name: Set variables
+      run: |
+        VER=$(cat VERSION)
+        echo "VERSION=$VER" >> $GITHUB_ENV
+
+    - name: Build Docker Image
+      uses: docker/build-push-action@v2
+      with:
+        push: false
+        context: .
+        file: ${{ env.BASE_DIR }}/Dockerfile
+        load: true
+        tags: |
+          ${{ env.USER }}/${{ env.REPO }}:${{ env.VERSION }}
+          ${{ env.USER }}/${{ env.REPO }}:latest
+
+    - name: Container scan
+      uses: azure/container-scan@v0
+      with:
+        image-name: ${{ env.USER }}/${{ env.REPO }}:${{ env.VERSION }}
+        severity-threshold: HIGH
+        run-quality-checks: true
+
+  alpine_ci:
+    name: Build and scan (Alpine base)
+
+    runs-on: ubuntu-latest
+    env:
+      BASE_DIR: alpine
+
+    steps:
+    - name: Check out the codebase
+      uses: actions/checkout@v2
+
+    - name: Set variables
+      run: |
+        VER=$(cat VERSION)
+        echo "VERSION=$VER" >> $GITHUB_ENV
+
+    - name: Build Docker Image
+      uses: docker/build-push-action@v2
+      with:
+        push: false
+        context: .
+        file: ${{ env.BASE_DIR }}/Dockerfile
+        load: true
+        tags: |
+          ${{ env.USER }}/${{ env.REPO }}:${{ env.VERSION }}-${{ env.BASE_DIR }}
+          ${{ env.USER }}/${{ env.REPO }}:latest-${{ env.BASE_DIR }}
+
+    - name: Container scan
+      uses: azure/container-scan@v0
+      with:
+        image-name: ${{ env.USER }}/${{ env.REPO }}:${{ env.VERSION }}
+        severity-threshold: HIGH
+        run-quality-checks: true
