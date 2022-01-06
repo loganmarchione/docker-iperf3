@@ -74,6 +74,6 @@ jobs:
     - name: Container scan
       uses: azure/container-scan@v0
       with:
-        image-name: ${{ env.USER }}/${{ env.REPO }}:${{ env.VERSION }}
+        image-name: ${{ env.USER }}/${{ env.REPO }}:${{ env.VERSION }}-${{ env.BASE_DIR }}
         severity-threshold: CRITICAL
         run-quality-checks: true
