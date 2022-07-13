@@ -12,12 +12,10 @@ env:
   REPO: docker-iperf3
 
 jobs:
-  ubuntu_ci:
-    name: Build and test (Ubuntu base)
+  alpine_ci:
+    name: Build and test
 
     runs-on: ubuntu-latest
-    env:
-      BASE_DIR: ubuntu
 
     steps:
     - name: Check out the codebase
@@ -36,7 +34,7 @@ jobs:
       with:
         push: false
         context: .
-        file: ${{ env.BASE_DIR }}/Dockerfile
+        file: Dockerfile
         load: true
         tags: |
           ${{ env.USER }}/${{ env.REPO }}:${{ env.VERSION }}
@@ -56,13 +54,11 @@ jobs:
         severity-threshold: CRITICAL
         run-quality-checks: true
 
-  ubuntu_cd:
-    name: Deploy (Ubuntu base)
+  alpine_cd:
+    name: Deploy
 
-    needs: ubuntu_ci
+    needs: alpine_ci
     runs-on: ubuntu-latest
-    env:
-      BASE_DIR: ubuntu
 
     steps:
     - name: Check out the codebase
@@ -91,93 +87,8 @@ jobs:
       with:
         push: true
         context: .
-        file: ${{ env.BASE_DIR }}/Dockerfile
+        file: Dockerfile
         platforms: linux/amd64,linux/arm64,linux/arm/v7
         tags: |
           ${{ env.USER }}/${{ env.REPO }}:${{ env.VERSION }}
           ${{ env.USER }}/${{ env.REPO }}:latest
-
-  alpine_ci:
-    name: Build and test (Alpine base)
-
-    runs-on: ubuntu-latest
-    env:
-      BASE_DIR: alpine
-
-    steps:
-    - name: Check out the codebase
-      uses: actions/checkout@v3
-
-    - name: Set variables
-      run: |
-        VER=$(cat VERSION)
-        echo "VERSION=$VER" >> $GITHUB_ENV
-
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v1
-
-    - name: Build Docker Image
-      uses: docker/build-push-action@v2
-      with:
-        push: false
-        context: .
-        file: ${{ env.BASE_DIR }}/Dockerfile
-        load: true
-        tags: |
-          ${{ env.USER }}/${{ env.REPO }}:${{ env.VERSION }}-${{ env.BASE_DIR }}
-          ${{ env.USER }}/${{ env.REPO }}:latest-${{ env.BASE_DIR }}
-
-    - name: Test image
-      run: |
-        docker images
-        docker run --name test-container --detach --publish '5201:5201' ${USER}/${REPO}:${VERSION}-${{ env.BASE_DIR }}
-        docker ps -a
-        docker exec --tty test-container /bin/sh -c "which iperf3 && iperf3 --version"
-
-    - name: Container scan
-      uses: azure/container-scan@v0
-      with:
-        image-name: ${{ env.USER }}/${{ env.REPO }}:${{ env.VERSION }}-${{ env.BASE_DIR }}
-        severity-threshold: CRITICAL
-        run-quality-checks: true
-
-  alpine_cd:
-    name: Deploy (Alpine base)
-
-    needs: alpine_ci
-    runs-on: ubuntu-latest
-    env:
-      BASE_DIR: alpine
-
-    steps:
-    - name: Check out the codebase
-      uses: actions/checkout@v3
-
-    - name: Set variables
-      run: |
-        VER=$(cat VERSION)
-        echo "VERSION=$VER" >> $GITHUB_ENV
-
-    - name: Set up QEMU
-      uses: docker/setup-qemu-action@v1
-
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v1
-
-    - name: Login to DockerHub
-      uses: docker/login-action@v1
-      with:
-        username: ${{ secrets.DOCKER_HUB_USER }}
-        password: ${{ secrets.DOCKER_HUB_PASS }}
-        logout: true
-
-    - name: Build Docker Image
-      uses: docker/build-push-action@v2
-      with:
-        push: true
-        context: .
-        file: ${{ env.BASE_DIR }}/Dockerfile
-        platforms: linux/amd64,linux/arm64,linux/arm/v7
-        tags: |
-          ${{ env.USER }}/${{ env.REPO }}:${{ env.VERSION }}-${{ env.BASE_DIR }}
-          ${{ env.USER }}/${{ env.REPO }}:latest-${{ env.BASE_DIR }}
