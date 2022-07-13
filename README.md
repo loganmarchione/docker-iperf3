@@ -6,7 +6,7 @@
 Runs an iPerf3 server in Docker
   - Source code: [GitHub](https://github.com/loganmarchione/docker-iperf3)
   - Docker container: [Docker Hub](https://hub.docker.com/r/loganmarchione/docker-iperf3)
-  - Image base: [Ubuntu](https://hub.docker.com/_/ubuntu) or [Alpine Linux](https://hub.docker.com/_/alpine/)
+  - Image base: [Alpine Linux](https://hub.docker.com/_/alpine/)
   - Init system: N/A
   - Application: [iPerf3](https://iperf.fr/)
   - Architecture: `linux/amd64,linux/arm64,linux/arm/v7`
@@ -21,10 +21,8 @@ N/A
 ## Docker image information
 
 ### Docker image tags
-  - `latest`: Latest version, based on Ubuntu
-  - `X.X.X`: [Semantic version](https://semver.org/), based on Ubuntu (use if you want to stick on a specific version)
-  - `latest-alpine`: Latest version, based on Alpine
-  - `X.X.X-alpine`: [Semantic version](https://semver.org/), based on Alpine (use if you want to stick on a specific version)
+  - `latest`: Latest version
+  - `X.X.X`: [Semantic version](https://semver.org/) (use if you want to stick on a specific version)
 
 ### Environment variables
 N/A
