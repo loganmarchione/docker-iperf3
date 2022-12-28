@@ -52,7 +52,7 @@ jobs:
       uses: docker://goodwithtech/dockle:v0.4.9
       with:
         args: |
-          - '--exit-code=1'
+          - '--exit-code 1'
           - '${{ env.USER }}/${{ env.REPO }}:${{ env.VERSION }}'
 
     - name: Container scan with Trivy
