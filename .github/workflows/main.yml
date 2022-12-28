@@ -11,8 +11,6 @@ on:
 env:
   USER: loganmarchione
   REPO: docker-iperf3
-    # See https://github.com/goodwithtech/dockle/issues/188
-  DOCKLE_HOST: "unix:///var/run/docker.sock"
 
 jobs:
   alpine_ci:
@@ -50,13 +48,20 @@ jobs:
         docker ps -a
         docker exec --tty test-container /bin/sh -c "which iperf3 && iperf3 --version"
 
-    - name: Container scan
-      uses: azure/container-scan@v0
+    - name: Container scan with Dockle
+      uses: docker://goodwithtech/dockle:v0.4.9
       with:
-        image-name: ${{ env.USER }}/${{ env.REPO }}:${{ env.VERSION }}
-        severity-threshold: CRITICAL
-        run-quality-checks: true
+        args: |
+          - '--exit-code=1'
+          - '${{ env.USER }}/${{ env.REPO }}:${{ env.VERSION }}'
 
+    - name: Container scan with Trivy
+      uses: aquasecurity/trivy-action@v0.8.0
+      with:
+        scan-type: 'image'
+        image-ref: '${{ env.USER }}/${{ env.REPO }}:${{ env.VERSION }}'
+        trivy-config: ./github/trivy.yaml
+    
   alpine_cd:
     name: Deploy
 
