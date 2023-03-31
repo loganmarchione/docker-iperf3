@@ -1,0 +1,15 @@
+version: '3'
+services:
+  app:
+    container_name: docker-iperf3
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile
+    networks:
+      - app
+    ports:
+      - '5201:5201'
+
+networks:
+  app:
