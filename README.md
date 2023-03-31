@@ -41,7 +41,7 @@ Below is an example docker-compose.yml file.
 version: '3'
 services:
   iperf3:
-    container_name: iperf3
+    container_name: docker-iperf3
     restart: unless-stopped
     networks:
       - iperf3
