@@ -66,6 +66,9 @@ jobs:
 
     - name: Container scan with Dockle
       uses: goodwithtech/dockle-action@v0.1.2
+      env:
+        # https://github.com/goodwithtech/dockle/issues/188
+        DOCKLE_HOST: "unix:///var/run/docker.sock"
       with:
         image: '${{ env.USER }}/${{ env.REPO }}:${{ env.VERSION }}'
         format: 'list'
