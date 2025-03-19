@@ -53,6 +53,8 @@ networks:
   iperf3:
 ```
 
+### Debugging only
+
 Below is an example of running locally (used to edit/test/debug).
 ```
 # Build the Dockerfile
@@ -64,7 +66,3 @@ docker compose -f docker-compose-dev.yml logs -f
 # Destroy when done
 docker compose -f docker-compose-dev.yml down
 ```
-
-## TODO
-- [x] ~~Add image based on Ubuntu or Debian~~
-- [x] ~~Run the processes inside the container as a non-root user~~
